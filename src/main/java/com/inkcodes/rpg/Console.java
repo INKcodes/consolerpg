@@ -9,7 +9,6 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.inkcodes.rpg.game.GameEngine;
 import com.inkcodes.rpg.graphics.GraphicsEngine;
 
 import java.io.IOException;
@@ -18,33 +17,15 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Game {
-
-  private static final Deque<Engine> engineStack = new ArrayDeque<>();
+public class Console {
   private Window window;
   private WindowBasedTextGUI textGUI;
-
-  public void run() {
-    try {
-      initWindow();
-
-      final var graphicsEngine = new GraphicsEngine();
-      graphicsEngine.init(window);
-      engineStack.add(graphicsEngine);
-
-      final var gameEngine = new GameEngine();
-      gameEngine.init(graphicsEngine);
-      engineStack.add(gameEngine);
-
-      textGUI.addWindowAndWait(window); // this is blocking
-    } catch (final Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
+  private static final Deque<Engine> engineStack = new ArrayDeque<>();
 
   private void initWindow() throws IOException {
     final DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
     defaultTerminalFactory.setAutoOpenTerminalEmulatorWindow(true);
+    defaultTerminalFactory.setTerminalEmulatorTitle("ConsoleRPG");
     final Terminal terminal = defaultTerminalFactory.createTerminal();
     final Screen screen = new TerminalScreen(terminal);
     screen.startScreen();
@@ -83,5 +64,22 @@ public class Game {
               final KeyStroke keyStroke,
               final AtomicBoolean hasBeenHandled) {}
         });
+  }
+
+  public Window init() {
+    try {
+      initWindow();
+    } catch (final IOException e) {
+      throw new RuntimeException(e);
+    }
+    return window;
+  }
+
+  public void addEngine(final GraphicsEngine engine) {
+    engineStack.add(engine);
+  }
+
+  public void run() {
+    textGUI.addWindowAndWait(window); // this is blocking
   }
 }
