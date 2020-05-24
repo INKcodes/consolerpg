@@ -8,9 +8,9 @@ import com.inkcodes.rpg.Engine;
 
 public class GraphicsEngine implements Engine, GraphicsFactory {
 
-  private Canvas canvas;
+  private final Canvas canvas;
 
-  public void init(final Window window) {
+  public GraphicsEngine(final Window window) {
     final Panel contentPanel = new Panel(new LinearLayout().setSpacing(0));
     canvas = new Canvas();
     contentPanel.addComponent(canvas);

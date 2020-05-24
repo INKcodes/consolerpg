@@ -9,7 +9,6 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.inkcodes.rpg.graphics.GraphicsEngine;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -75,7 +74,7 @@ public class Console {
     return window;
   }
 
-  public void addEngine(final GraphicsEngine engine) {
+  public void addEngine(final Engine engine) {
     engineStack.add(engine);
   }
 

@@ -11,12 +11,11 @@ public class Main {
   public static void main(final String[] args) {
     final Window window = console.init();
 
-    final var graphicsEngine = new GraphicsEngine();
-    graphicsEngine.init(window);
+    final var graphicsEngine = new GraphicsEngine(window);
     console.addEngine(graphicsEngine);
 
-    final var gameEngine = new GameEngine();
-    gameEngine.init(graphicsEngine);
+    final var gameEngine = new GameEngine(graphicsEngine);
+    console.addEngine(gameEngine);
 
     console.run();
   }
