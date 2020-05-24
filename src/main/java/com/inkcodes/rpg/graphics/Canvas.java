@@ -1,15 +1,22 @@
 package com.inkcodes.rpg.graphics;
 
-import com.googlecode.lanterna.Symbols;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.AbstractComponent;
 import com.googlecode.lanterna.gui2.ComponentRenderer;
 import com.googlecode.lanterna.gui2.TextGUIGraphics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class Canvas extends AbstractComponent<Canvas> {
 
-  private int playerPosX;
-  private int playerPosY;
+  private final List<Sprite> sprites = new ArrayList<>();
+
+  public void addSprite(final Sprite sprite) {
+    sprites.add(sprite);
+    sprite.onChange((Void) -> this.invalidate());
+    this.invalidate();
+  }
 
   @Override
   protected ComponentRenderer<Canvas> createDefaultRenderer() {
@@ -22,14 +29,10 @@ class Canvas extends AbstractComponent<Canvas> {
 
       @Override
       public void drawComponent(final TextGUIGraphics graphics, final Canvas component) {
-        graphics.putString(playerPosX, playerPosY, String.valueOf(Symbols.CLUB));
+        System.out.println("drawComponent");
+        sprites.forEach(
+            s -> graphics.putString(s.getPosX(), s.getPosY(), String.valueOf(s.getSymbol())));
       }
     };
-  }
-
-  public void setPlayerPosition(final int playerPosX, final int playerPosY) {
-    this.playerPosX = playerPosX;
-    this.playerPosY = playerPosY;
-    this.invalidate();
   }
 }

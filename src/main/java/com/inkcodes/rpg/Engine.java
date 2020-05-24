@@ -1,7 +1,7 @@
 package com.inkcodes.rpg;
 
-public interface Engine {
-  boolean run();
+import com.googlecode.lanterna.input.KeyStroke;
 
-  void shutdown();
+public interface Engine {
+  void tick(KeyStroke keyStroke);
 }
