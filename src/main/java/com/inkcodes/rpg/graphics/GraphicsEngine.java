@@ -1,27 +1,33 @@
 package com.inkcodes.rpg.graphics;
 
-import com.google.common.base.Preconditions;
 import com.googlecode.lanterna.Symbols;
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.graphics.TextGraphics;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.inkcodes.rpg.Engine;
 
 import java.io.IOException;
 
-public class GraphicsEngine {
+public class GraphicsEngine implements Engine {
 
   private Screen screen;
   private boolean initialized;
   private boolean dirty;
 
+  private int playerPosX = 1;
+  private int playerPosY = 1;
+
   public void init() {
     try {
-      DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
+      final DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
       defaultTerminalFactory.setAutoOpenTerminalEmulatorWindow(true);
-      Terminal terminal = defaultTerminalFactory.createTerminal();
+      final Terminal terminal = defaultTerminalFactory.createTerminal();
       screen = new TerminalScreen(terminal);
       screen.startScreen();
       screen.setCursorPosition(null);
@@ -31,9 +37,42 @@ public class GraphicsEngine {
     }
   }
 
-  public void drawWorld() {
-    Preconditions.checkArgument(initialized);
-    TerminalSize terminalSize = screen.getTerminalSize();
+  @Override
+  public boolean run() {
+    drawWorld();
+
+    try {
+      final KeyStroke stroke;
+      stroke = screen.pollInput();
+      if (stroke != null) {
+        if (stroke.getKeyType() == KeyType.Escape) {
+          return false; // game will be stopped!
+        } else {
+          switch (stroke.getKeyType()) {
+            case ArrowDown -> playerPosY++;
+            case ArrowRight -> playerPosX++;
+            case ArrowLeft -> playerPosX--;
+            case ArrowUp -> playerPosY--;
+          }
+        }
+      }
+    } catch (final IOException e) {
+      throw new GraphicsException(e);
+    }
+
+    drawPlayer();
+
+    refreshScreen();
+    return true;
+  }
+
+  private void drawPlayer() {
+    screen.setCharacter(playerPosX, playerPosY, new TextCharacter(Symbols.CLUB));
+    markDirty();
+  }
+
+  private void drawWorld() {
+    final TerminalSize terminalSize = screen.getTerminalSize();
     drawBorderedBox(0, 0, terminalSize.getColumns(), terminalSize.getRows());
     refreshScreen();
   }
@@ -42,15 +81,15 @@ public class GraphicsEngine {
     if (dirty) {
       try {
         screen.refresh();
-      } catch (IOException e) {
+      } catch (final IOException e) {
         throw new GraphicsException(e);
       }
       dirty = false;
     }
   }
 
-  private void drawBorderedBox(int x, int y, int width, int height) {
-    TextGraphics textGraphics = screen.newTextGraphics();
+  private void drawBorderedBox(final int x, final int y, final int width, final int height) {
+    final TextGraphics textGraphics = screen.newTextGraphics();
 
     // draw top left corner
     textGraphics.setCharacter(x, y, Symbols.DOUBLE_LINE_TOP_LEFT_CORNER);
@@ -90,5 +129,14 @@ public class GraphicsEngine {
 
   private void markDirty() {
     dirty = true;
+  }
+
+  @Override
+  public void shutdown() {
+    try {
+      screen.close();
+    } catch (final IOException e) {
+      throw new GraphicsException(e);
+    }
   }
 }

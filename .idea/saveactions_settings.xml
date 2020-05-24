@@ -6,6 +6,9 @@
         <option value="activate" />
         <option value="organizeImports" />
         <option value="reformat" />
+        <option value="fieldCanBeFinal" />
+        <option value="localCanBeFinal" />
+        <option value="localCanBeFinalExceptImplicit" />
       </set>
     </option>
     <option name="configurationPath" value="" />
