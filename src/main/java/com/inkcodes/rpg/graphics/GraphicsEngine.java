@@ -21,7 +21,7 @@ public class GraphicsEngine implements Engine, GraphicsFactory {
   public void tick(final KeyStroke keyStroke) {}
 
   @Override
-  public Sprite createGraphics(final char sym) {
+  public Sprite createSprite(final char sym) {
     final Sprite sprite = new Sprite(sym);
     canvas.addSprite(sprite);
     return sprite;
