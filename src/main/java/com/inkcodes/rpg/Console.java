@@ -2,6 +2,7 @@ package com.inkcodes.rpg;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.gui2.Window;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
@@ -9,7 +10,9 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.swing.SwingTerminalFontConfiguration;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -25,6 +28,9 @@ public class Console {
     final DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
     defaultTerminalFactory.setAutoOpenTerminalEmulatorWindow(true);
     defaultTerminalFactory.setTerminalEmulatorTitle("ConsoleRPG");
+    final Font font = new Font("Courier New", Font.PLAIN, 36);
+    final var fontConfig = SwingTerminalFontConfiguration.newInstance(font);
+    defaultTerminalFactory.setTerminalEmulatorFontConfiguration(fontConfig);
     final Terminal terminal = defaultTerminalFactory.createTerminal();
     final Screen screen = new TerminalScreen(terminal);
     screen.startScreen();
