@@ -18,7 +18,7 @@ public class Sprite {
 
   public void setPosX(final int posX) {
     invalidate();
-    this.posX = posX;
+    this.posX = clamp(posX, 0, GraphicsEngine.SCREEN_WIDTH - 1);
   }
 
   private void invalidate() {
@@ -31,7 +31,12 @@ public class Sprite {
 
   public void setPosY(final int posY) {
     invalidate();
-    this.posY = posY;
+    this.posY = clamp(posY, 0, GraphicsEngine.SCREEN_HEIGHT - 1);
+  }
+
+  private int clamp(final int value, final int min, final int max) {
+    final int calcMax = Math.min(max, value);
+    return Math.max(min, calcMax);
   }
 
   public char getSymbol() {

@@ -10,6 +10,9 @@ public class GraphicsEngine implements Engine, GraphicsFactory {
 
   private final Canvas canvas;
 
+  public static int SCREEN_WIDTH;
+  public static int SCREEN_HEIGHT;
+
   public GraphicsEngine(final Window window) {
     final Panel contentPanel = new Panel(new LinearLayout().setSpacing(0));
     canvas = new Canvas();

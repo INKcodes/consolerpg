@@ -11,6 +11,7 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.SwingTerminalFontConfiguration;
+import com.inkcodes.rpg.graphics.GraphicsEngine;
 
 import java.awt.*;
 import java.io.IOException;
@@ -41,7 +42,10 @@ public class Console {
         new WindowListener() {
           @Override
           public void onResized(
-              final Window window, final TerminalSize oldSize, final TerminalSize newSize) {}
+              final Window window, final TerminalSize oldSize, final TerminalSize newSize) {
+            GraphicsEngine.SCREEN_HEIGHT = newSize.getRows();
+            GraphicsEngine.SCREEN_WIDTH = newSize.getColumns();
+          }
 
           @Override
           public void onMoved(
