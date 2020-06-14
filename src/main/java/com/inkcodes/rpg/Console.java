@@ -4,6 +4,7 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.Window;
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
@@ -62,6 +63,12 @@ public class Console {
               } catch (final IOException e) {
                 throw new RuntimeException(e);
               }
+            } else if (keyStroke.getCharacter() != null && keyStroke.getCharacter() == 't') {
+              new MessageDialogBuilder()
+                  .setTitle("Schild")
+                  .setText("Hallo Welt")
+                  .build()
+                  .showDialog(textGUI);
             } else {
               engineStack.forEach(e -> e.tick(keyStroke));
             }
