@@ -14,7 +14,7 @@ public class Main {
     final var graphicsEngine = new GraphicsEngine(window);
     console.addEngine(graphicsEngine);
 
-    final var gameEngine = new GameEngine(graphicsEngine);
+    final var gameEngine = new GameEngine(graphicsEngine, console);
     console.addEngine(gameEngine);
 
     console.run();

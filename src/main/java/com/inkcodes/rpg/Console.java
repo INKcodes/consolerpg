@@ -12,6 +12,7 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.SwingTerminalFontConfiguration;
+import com.inkcodes.rpg.graphics.DialogFactory;
 import com.inkcodes.rpg.graphics.GraphicsEngine;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Console {
+public class Console implements DialogFactory {
   private Window window;
   private WindowBasedTextGUI textGUI;
   private static final Deque<Engine> engineStack = new ArrayDeque<>();
@@ -39,6 +40,8 @@ public class Console {
     textGUI = new MultiWindowTextGUI(screen);
     window = new BasicWindow();
     window.setHints(Arrays.asList(Window.Hint.FULL_SCREEN, Window.Hint.NO_DECORATIONS));
+    GraphicsEngine.SCREEN_HEIGHT = terminal.getTerminalSize().getRows();
+    GraphicsEngine.SCREEN_WIDTH = terminal.getTerminalSize().getColumns();
     window.addWindowListener(
         new WindowListener() {
           @Override
@@ -63,12 +66,6 @@ public class Console {
               } catch (final IOException e) {
                 throw new RuntimeException(e);
               }
-            } else if (keyStroke.getCharacter() != null && keyStroke.getCharacter() == 't') {
-              new MessageDialogBuilder()
-                  .setTitle("Schild")
-                  .setText("Hallo Welt")
-                  .build()
-                  .showDialog(textGUI);
             } else {
               engineStack.forEach(e -> e.tick(keyStroke));
             }
@@ -97,5 +94,10 @@ public class Console {
 
   public void run() {
     textGUI.addWindowAndWait(window); // this is blocking
+  }
+
+  @Override
+  public void showDialog(final String title, final String text) {
+    new MessageDialogBuilder().setTitle(title).setText(text).build().showDialog(textGUI);
   }
 }
