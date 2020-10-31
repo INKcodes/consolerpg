@@ -2,9 +2,10 @@ package com.inkcodes.rpg.graphics;
 
 import java.util.function.Consumer;
 
-public class Sprite {
+public class Sprite implements Comparable<Sprite> {
   private int posX;
   private int posY;
+  private int posZ;
   private final char symbol;
   private Consumer<Void> consumer;
 
@@ -14,6 +15,14 @@ public class Sprite {
 
   public int getPosX() {
     return posX;
+  }
+
+  public int getPosZ() {
+    return posZ;
+  }
+
+  public void setPosZ(final int posZ) {
+    this.posZ = posZ;
   }
 
   public void setPosX(final int posX) {
@@ -45,5 +54,10 @@ public class Sprite {
 
   public void onChange(final Consumer<Void> consumer) {
     this.consumer = consumer;
+  }
+
+  @Override
+  public int compareTo(final Sprite other) {
+    return this.posZ > other.posZ ? 1 : -1;
   }
 }

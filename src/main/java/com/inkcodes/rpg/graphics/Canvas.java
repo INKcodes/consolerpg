@@ -6,6 +6,7 @@ import com.googlecode.lanterna.gui2.ComponentRenderer;
 import com.googlecode.lanterna.gui2.TextGUIGraphics;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class Canvas extends AbstractComponent<Canvas> {
@@ -15,6 +16,7 @@ class Canvas extends AbstractComponent<Canvas> {
   public void addSprite(final Sprite sprite) {
     sprites.add(sprite);
     sprite.onChange((Void) -> this.invalidate());
+    Collections.sort(sprites);
     this.invalidate();
   }
 

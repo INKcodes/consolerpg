@@ -21,29 +21,30 @@ public class GameEngine implements Engine {
     this.dialogFactory = dialogFactory;
     this.schildSprite.setPosX(5);
     this.schildSprite.setPosY(5);
+    this.playerSprite.setPosZ(1000);
+    this.schildSprite.setPosZ(0);
   }
 
   @Override
   public void tick(final KeyStroke keyStroke) {
-
+    System.out.println(keyStroke);
     switch (keyStroke.getKeyType()) {
-      case ArrowDown:
-        playerSprite.setPosY(playerSprite.getPosY() + 1);
-        break;
-      case ArrowUp:
-        playerSprite.setPosY(playerSprite.getPosY() - 1);
-        break;
-      case ArrowRight:
-        playerSprite.setPosX(playerSprite.getPosX() + 1);
-        break;
-      case ArrowLeft:
-        playerSprite.setPosX(playerSprite.getPosX() - 1);
-        break;
+      case ArrowDown -> playerSprite.setPosY(playerSprite.getPosY() + 1);
+      case ArrowUp -> playerSprite.setPosY(playerSprite.getPosY() - 1);
+      case ArrowRight -> playerSprite.setPosX(playerSprite.getPosX() + 1);
+      case ArrowLeft -> playerSprite.setPosX(playerSprite.getPosX() - 1);
+      case Character -> {
+        switch (keyStroke.getCharacter()) {
+          case 's' -> playerSprite.setPosY(playerSprite.getPosY() + 1);
+          case 'w' -> playerSprite.setPosY(playerSprite.getPosY() - 1);
+          case 'd' -> playerSprite.setPosX(playerSprite.getPosX() + 1);
+          case 'a' -> playerSprite.setPosX(playerSprite.getPosX() - 1);
+        }
+      }
     }
     if (playerSprite.getPosX() == schildSprite.getPosX()
         && playerSprite.getPosY() == schildSprite.getPosY()) {
       dialogFactory.showDialog("Schild", "Hallo Welt!");
-      System.out.println("test");
     }
   }
 }
