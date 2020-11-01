@@ -1,8 +1,5 @@
 package com.inkcodes.rpg.graphics;
 
-import com.googlecode.lanterna.gui2.LinearLayout;
-import com.googlecode.lanterna.gui2.Panel;
-import com.googlecode.lanterna.gui2.Window;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.inkcodes.rpg.Engine;
 
@@ -13,11 +10,8 @@ public class GraphicsEngine implements Engine, GraphicsFactory {
   public static int SCREEN_WIDTH;
   public static int SCREEN_HEIGHT;
 
-  public GraphicsEngine(final Window window) {
-    final Panel contentPanel = new Panel(new LinearLayout().setSpacing(0));
-    canvas = new Canvas();
-    contentPanel.addComponent(canvas);
-    window.setComponent(contentPanel);
+  public GraphicsEngine(final Canvas canvas) {
+    this.canvas = canvas;
   }
 
   @Override

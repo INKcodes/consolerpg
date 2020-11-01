@@ -27,7 +27,6 @@ public class GameEngine implements Engine {
 
   @Override
   public void tick(final KeyStroke keyStroke) {
-    System.out.println(keyStroke);
     switch (keyStroke.getKeyType()) {
       case ArrowDown -> playerSprite.setPosY(playerSprite.getPosY() + 1);
       case ArrowUp -> playerSprite.setPosY(playerSprite.getPosY() - 1);

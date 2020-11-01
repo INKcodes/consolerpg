@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class Canvas extends AbstractComponent<Canvas> {
+public class Canvas extends AbstractComponent<Canvas> {
 
   private final List<Sprite> sprites = new ArrayList<>();
 
@@ -21,12 +21,20 @@ class Canvas extends AbstractComponent<Canvas> {
   }
 
   @Override
+  public synchronized Canvas setSize(final TerminalSize size) {
+    super.setSize(size);
+    GraphicsEngine.SCREEN_HEIGHT = size.getRows();
+    GraphicsEngine.SCREEN_WIDTH = size.getColumns();
+    return this;
+  }
+
+  @Override
   protected ComponentRenderer<Canvas> createDefaultRenderer() {
     return new ComponentRenderer<>() {
 
       @Override
       public TerminalSize getPreferredSize(final Canvas component) {
-        return new TerminalSize(80, 24);
+        return new TerminalSize(800, 240);
       }
 
       @Override
