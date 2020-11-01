@@ -1,5 +1,7 @@
 package com.inkcodes.rpg.game;
 
+import com.github.czyzby.noise4j.map.Grid;
+import com.github.czyzby.noise4j.map.generator.room.dungeon.DungeonGenerator;
 import com.googlecode.lanterna.Symbols;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.inkcodes.rpg.Engine;
@@ -16,13 +18,38 @@ public class GameEngine implements Engine {
 
   public GameEngine(final GraphicsFactory graphicsFactory, final DialogFactory dialogFactory) {
     this.graphicsFactory = graphicsFactory;
-    this.playerSprite = graphicsFactory.createSprite(Symbols.CLUB);
+    this.playerSprite = graphicsFactory.createSprite('\u263A');
     this.schildSprite = graphicsFactory.createSprite(Symbols.DIAMOND);
     this.dialogFactory = dialogFactory;
     this.schildSprite.setPosX(5);
     this.schildSprite.setPosY(5);
     this.playerSprite.setPosZ(1000);
-    this.schildSprite.setPosZ(0);
+    this.schildSprite.setPosZ(10);
+
+    final Grid grid = new Grid(60); // This algorithm likes odd-sized maps, although it works either way.
+    final DungeonGenerator dungeonGenerator = new DungeonGenerator();
+    dungeonGenerator.setMaxRoomSize(11);
+    dungeonGenerator.setMinRoomSize(5);
+    dungeonGenerator.generate(grid);
+    for (int x = 0; x < grid.getWidth(); x++) {
+      for (int y = 0; y < grid.getHeight(); y++) {
+        final float cell = grid.get(x, y);
+        if (cell < dungeonGenerator.getWallThreshold()) {
+          // floor or corridor
+          final Sprite sprite;
+          if (cell == dungeonGenerator.getFloorThreshold()) {
+            sprite = graphicsFactory.createSprite('.');
+
+          } else {
+            // corridor
+            sprite = graphicsFactory.createSprite(Symbols.BLOCK_SOLID);
+          }
+          sprite.setPosX(x);
+          sprite.setPosY(y);
+          sprite.setPosZ(0);
+        }
+      }
+    }
   }
 
   @Override

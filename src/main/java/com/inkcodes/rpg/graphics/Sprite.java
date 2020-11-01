@@ -27,7 +27,7 @@ public class Sprite implements Comparable<Sprite> {
 
   public void setPosX(final int posX) {
     invalidate();
-    this.posX = clamp(posX, 0, GraphicsEngine.SCREEN_WIDTH - 1);
+    this.posX = posX;
   }
 
   private void invalidate() {
@@ -40,7 +40,7 @@ public class Sprite implements Comparable<Sprite> {
 
   public void setPosY(final int posY) {
     invalidate();
-    this.posY = clamp(posY, 0, GraphicsEngine.SCREEN_HEIGHT - 1);
+    this.posY = posY;
   }
 
   private int clamp(final int value, final int min, final int max) {

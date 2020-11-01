@@ -27,4 +27,5 @@ java {
 dependencies {
     implementation 'com.googlecode.lanterna:lanterna:3.0.3'
     implementation("com.google.guava:guava:29.0-jre")
+    compile 'com.github.czyzby:noise4j:0.1.0'
 }

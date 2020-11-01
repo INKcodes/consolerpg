@@ -39,6 +39,7 @@ public class Canvas extends AbstractComponent<Canvas> {
 
       @Override
       public void drawComponent(final TextGUIGraphics graphics, final Canvas component) {
+        System.out.println("redraw : " + sprites.size());
         sprites.forEach(
             s -> graphics.putString(s.getPosX(), s.getPosY(), String.valueOf(s.getSymbol())));
       }
